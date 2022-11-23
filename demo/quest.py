@@ -61,7 +61,7 @@ class Hero(pygame.sprite.Sprite):
     """
     def __init__(self) -> None:
         super().__init__()
-        self.image = load_image("hero.png").convert_alpha()
+        self.image = load_image("Ball.png").convert_alpha()
         self.velocity = [0, 0]
         self._position = [0.0, 0.0]
         self._old_position = self.position
