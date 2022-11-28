@@ -44,39 +44,3 @@ class Ball(pg.sprite.Sprite):
             self.pos.x = WIDTH
 
         self.rect.midbottom = self.pos
-
-class Platform(pg.sprite.Sprite):
-    def __init__(self,x_pos,y_pos,width,height):
-        pg.sprite.Sprite.__init__(self)
-        self.image = pg.Surface((width,height))
-        self.image.fill(PLATFORM_COLOR)
-        self.rect = self.image.get_rect()
-        self.rect.x = x_pos
-        self.rect.y = y_pos
-
-class Wall(pg.sprite.Sprite):
-    def __init__(self,x_pos,y_pos,width,height):
-        pg.sprite.Sprite.__init__(self)
-        self.image = pg.Surface((width,height))
-        self.image.fill(BACKGROUND_COLOR)
-        self.rect = self.image.get_rect()
-        self.rect.x = x_pos
-        self.rect.y = y_pos
-
-
-class Spikes(pg.sprite.Sprite):
-    def __init__(self,x_pos,y_pos):
-        pg.sprite.Sprite.__init__(self)
-        self.image = pg.image.load('Assets/spike.png').convert()
-        self.rect = self.image.get_rect()
-        self.rect.x = x_pos
-        self.rect.y = y_pos
-
-class Platform_base(pg.sprite.Sprite):
-    def __init__(self,x_pos,y_pos,width,height):
-        pg.sprite.Sprite.__init__(self)
-        self.image = pg.Surface((width,height))
-        self.image.fill(PLATFORM_COLOR)
-        self.rect = self.image.get_rect()
-        self.rect.x = x_pos
-        self.rect.y = y_pos
