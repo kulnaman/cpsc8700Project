@@ -1,16 +1,20 @@
 import pygame as pg
 import random
-from settings import *
-from sprites import *
 from os import path
 import math
-from Camera import *
-from buttons import *
-
-class Game:
+from src.settings import *
+from src.camera import *
+from src.buttons import *
+from entity.ball import *
+from entity.spike import *
+from entity.entityFactory import *
+class HalloweenGame:
+    def __new__(cls):
+        if not hasattr(cls,'instance'):
+            cls.instance = super(HalloweenGame,cls).__new__(cls)
+            return cls.instance
     def __init__(self):
         pg.init()
-        pg.mixer.init()
         self.display_screen = pg.display.set_mode((WIDTH, HEIGHT))
         pg.display.set_caption(TITLE)
         self.clock = pg.time.Clock()
@@ -21,6 +25,7 @@ class Game:
 
     def new(self):
         self.score = 0
+        # init groups for classes
         self.all_sprites = pg.sprite.Group()
         self.platforms = pg.sprite.Group()
         self.spikes = pg.sprite.Group()
@@ -29,11 +34,11 @@ class Game:
         self.ball = Ball(self)
         self.all_sprites.add(self.ball)
         for plat in PLATFORM_LIST:
-            p = Platform(*plat)
+            p = EntityFactory(*plat).getSolidObject("Platform")
             self.platforms.add(p)
             self.all_sprites.add(p)
         for wall in WALL_LIST:
-            w = Wall(*wall)
+            w = EntityFactory(*wall).getSolidObject("Wall")
             self.walls.add(w)
             self.all_sprites.add(w)
         for spike in SPIKES_LIST:
@@ -41,7 +46,7 @@ class Game:
             self.spikes.add(s)
             self.all_sprites.add(s)
         for base in BASE_LIST:
-            b = Platform_base(*base)
+            b = EntityFactory(*base).getSolidObject("Base")
             self.bases.add(b)
             self.all_sprites.add(b)
 
@@ -144,10 +149,10 @@ class Game:
         while waiting:
             self.display_screen.fill(BACKGROUND_COLOR)
             if self.flag==1:
-                win = Button(self,"YOU WIN",330,120,0,0,BACKGROUND_COLOR,BACKGROUND_COLOR,100)
+                win = Button(self,"Completed level 1",330,120,0,0,BACKGROUND_COLOR,BACKGROUND_COLOR,100)
                 win.create_button()
             else:
-                win = Button(self,"YOU LOSE",330,120,0,0,BACKGROUND_COLOR,BACKGROUND_COLOR,100)
+                win = Button(self,"Failure",330,120,0,0,BACKGROUND_COLOR,BACKGROUND_COLOR,100)
                 win.create_button()
             restart = Button(self,"RESTART",170,250,120,50,GREEN,DARK_GREEN,20,self.new)
             restart.create_button()
@@ -185,7 +190,7 @@ class Game:
 
 
 if __name__ == '__main__':
-        g = Game()
+        g = HalloweenGame()
         g.show_start_screen()
         while g.running:
             g.new()

@@ -1,7 +1,7 @@
 import pygame as pg
-from settings import *
-import Vector
-vec = Vector.Vec2d
+from src.settings import *
+from src.Vector import * 
+vec = Vec2d
 
 class Ball(pg.sprite.Sprite):
     def __init__(self,game):
