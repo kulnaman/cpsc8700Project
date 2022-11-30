@@ -7,6 +7,7 @@ from src.camera import *
 from src.buttons import *
 from entity.ball import *
 from entity.spike import *
+from entity.background import *
 from entity.entityFactory import *
 class HalloweenGame:
     def __new__(cls):
@@ -15,6 +16,7 @@ class HalloweenGame:
             return cls.instance
     def __init__(self):
         pg.init()
+        pg.mixer.init()
         self.display_screen = pg.display.set_mode((WIDTH, HEIGHT))
         pg.display.set_caption(TITLE)
         self.clock = pg.time.Clock()
@@ -22,7 +24,8 @@ class HalloweenGame:
         self.font_name = pg.font.match_font(FONT_NAME)
         self.pause = False
         self.flag = 0
-
+        self.bg = Background('Assets/bck1.jpg',[0,0])
+        self.pop_sound = pg.mixer.Sound('Assets/sound/hit.wav') 
     def new(self):
         self.score = 0
         # init groups for classes
@@ -61,6 +64,7 @@ class HalloweenGame:
             self.events()
             self.update()
             self.draw()
+            
             if self.ball.pos.x>4460:
                 self.flag=1
                 self.show_go_screen()
@@ -88,6 +92,7 @@ class HalloweenGame:
                 self.ball.vel.x = 0
         hits = pg.sprite.spritecollide(self.ball, self.spikes, False)
         if hits:
+                pg.mixer.Sound.play(self.pop_sound)
                 self.show_go_screen()
 
         self.camera.update(self.ball)
@@ -104,6 +109,10 @@ class HalloweenGame:
                 
     def draw(self):
         self.display_screen.fill(BACKGROUND_COLOR)
+        self.display_screen.blit(self.bg.image,self.bg.rect)
+        music =  pg.mixer.music.load('Assets/sound/bg.ogg')
+        pg.mixer.music.set_volume(0.7)
+        pg.mixer.music.play(-1)
         for sprite in self.all_sprites:
             self.display_screen.blit(sprite.image, self.camera.apply(sprite))
         pg.display.update()
@@ -112,7 +121,9 @@ class HalloweenGame:
     def show_start_screen(self):
         waiting = True
         while waiting:
+            #self.display_screen.fill(BACKGROUND_COLOR)
             self.display_screen.fill(BACKGROUND_COLOR)
+            self.display_screen.blit(self.bg.image,self.bg.rect)
             text = Button(self,TITLE,400,100,0,0,BACKGROUND_COLOR,BACKGROUND_COLOR,90)
             text.create_button()
             play = Button(self,"PLAY",170,200,120,50,GREEN,DARK_GREEN,20,self.new)
@@ -127,6 +138,7 @@ class HalloweenGame:
                         quit()
             pg.display.update()
     def pause_game(self): 
+
         while self.pause:    
             for event in pg.event.get():
                 if event.type == pg.QUIT:
@@ -147,12 +159,14 @@ class HalloweenGame:
     def show_go_screen(self):
         waiting = True
         while waiting:
+            #self.display_screen.fill(BACKGROUND_COLOR)
             self.display_screen.fill(BACKGROUND_COLOR)
+            self.display_screen.blit(self.bg.image,self.bg.rect)
             if self.flag==1:
-                win = Button(self,"Completed level 1",330,120,0,0,BACKGROUND_COLOR,BACKGROUND_COLOR,100)
+                win = Button(self,"YOU WIN!!",330,120,0,0,BACKGROUND_COLOR,BACKGROUND_COLOR,100)
                 win.create_button()
             else:
-                win = Button(self,"Failure",330,120,0,0,BACKGROUND_COLOR,BACKGROUND_COLOR,100)
+                win = Button(self,"GAME OVER",330,120,0,0,BACKGROUND_COLOR,BACKGROUND_COLOR,100)
                 win.create_button()
             restart = Button(self,"RESTART",170,250,120,50,GREEN,DARK_GREEN,20,self.new)
             restart.create_button()
@@ -173,7 +187,9 @@ class HalloweenGame:
     def show_instruction(self):
         waiting = True
         while waiting:
+                #self.display_screen.fill(BACKGROUND_COLOR)
                 self.display_screen.fill(BACKGROUND_COLOR)
+                self.display_screen.blit(self.bg.image,self.bg.rect)
                 back = Button(self,"BACK",30,30,120,50,GREEN,DARK_GREEN,20,self.show_start_screen)
                 back.create_button()
                 left = Button(self,"Press Left arrow key <- to move left",300,120,0,0,BACKGROUND_COLOR,BACKGROUND_COLOR,40)

@@ -7,7 +7,8 @@ class Ball(pg.sprite.Sprite):
     def __init__(self,game):
         pg.sprite.Sprite.__init__(self)
         self.game = game
-        self.image = pg.image.load('Assets/ball2.png').convert()
+        self.image = pg.image.load('Assets/ball2.png').convert_alpha()
+        self.image.set_colorkey((0, 0, 0))
         self.rect = self.image.get_rect()
         self.rect.center = (WIDTH/2,HEIGHT/2)
         self.pos = vec(100,80)
