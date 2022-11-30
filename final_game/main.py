@@ -25,7 +25,6 @@ class HalloweenGame:
         self.pause = False
         self.flag = 0
         self.bg = Background('Assets/bck1.jpg',[0,0])
-        self.display_screen.blit(self.bg.image,self.bg.rect)
         music =  pg.mixer.music.load('Assets/sound/bg.ogg')
         pg.mixer.music.set_volume(0.7)
         pg.mixer.music.play(-1)
@@ -113,6 +112,7 @@ class HalloweenGame:
                 
     def draw(self):
         self.display_screen.fill(BACKGROUND_COLOR)
+        self.display_screen.blit(self.bg.image,self.bg.rect)
         for sprite in self.all_sprites:
             self.display_screen.blit(sprite.image, self.camera.apply(sprite))
         pg.display.update()
